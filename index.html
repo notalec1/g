@@ -2,419 +2,508 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NotAlec1's Arcade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>notalec1's Arcade</title>
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
 
     <style>
-        /* --- VARIABLES --- */
+        /* --- iOS 26 LIQUID GLASS THEME (FIXED) --- */
         :root {
-            --accent-color: #00ff9d; 
-            --accent-glow: rgba(0, 255, 157, 0.4);
-            --glass-bg: rgba(25, 25, 30, 0.65); /* Translucent dark */
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-color: #e0e0e0;
-            --tag-bg: rgba(0, 0, 0, 0.4);
+            /* Palette */
+            --glass-surface: rgba(20, 20, 20, 0.65); /* Darker for better text contrast */
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-highlight: rgba(255, 255, 255, 0.25);
+            --glass-blur: 40px;
+            
+            --primary: #0a84ff;
+            --accent-purple: #bf5af2;
+            --accent-pink: #ff375f;
+            --accent-green: #30d158;
+            --accent-orange: #ff9f0a;
+            
+            /* Typography - Improved Readability */
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.85); /* Increased from 0.6 */
+            --text-tertiary: rgba(255, 255, 255, 0.6);  /* Increased from 0.4 */
         }
 
         /* --- RESET & BASE --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; margin: 0; padding: 0; }
+        
         body {
-            color: var(--text-color);
-            font-family: 'Space Grotesk', sans-serif;
+            background-color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            line-height: 1.5;
             overflow-x: hidden;
         }
 
-        /* --- ANIMATED BACKGROUND --- */
-        .bg-animation {
+        /* --- 1. LIVING MESH BACKGROUND --- */
+        .mesh-background {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
-            background: linear-gradient(-45deg, #0b0b0f, #180a18, #0a1618, #050505);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: #050505;
+            overflow: hidden;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .mesh-blob {
+            position: absolute;
+            filter: blur(90px);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: meshFloat 12s infinite alternate ease-in-out;
         }
 
-        /* --- CUSTOM SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0b0b0f; }
-        ::-webkit-scrollbar-thumb { 
-            background: #333; 
-            border-radius: 4px; 
-            border: 1px solid #000;
+        /* Blob Configurations */
+        .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: #0040dd; animation-duration: 14s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 70vw; height: 70vw; background: #4800b8; animation-duration: 18s; }
+        .blob-3 { top: 30%; left: 40%; width: 45vw; height: 45vw; background: #b80046; animation-duration: 22s; opacity: 0.4; }
+        
+        @keyframes meshFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(20px, -20px) scale(1.05); }
         }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
-        /* --- HEADER --- */
+        /* --- 2. HEADER --- */
         header {
-            text-align: center;
-            padding: 60px 20px 30px;
+            padding: 80px 24px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .super-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
         }
 
         h1 {
-            font-family: 'Press Start 2P', cursive;
-            color: var(--accent-color);
-            text-shadow: 0 0 15px var(--accent-glow);
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            background: linear-gradient(180deg, #fff 20%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            line-height: 1.1;
         }
 
-        header p { color: #aaa; font-size: 1.1rem; }
+        /* --- 3. FILTER CONTAINER (FIXED CLIPPING) --- */
+        .filter-scroll-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            /* Added vertical padding to wrapper to prevent clip on scroll */
+            padding: 10px 0; 
+            background: rgba(0,0,0,0.01);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            /* Soft fade mask on sides */
+            mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+        }
 
-        /* --- FILTERS --- */
         .filter-container {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 40px;
-            padding: 0 10px;
+            gap: 12px;
+            overflow-x: auto;
+            /* CRITICAL FIX: Increased padding top/bottom prevents hover scale cutoff */
+            padding: 15px 24px; 
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
+        
+        .filter-container::-webkit-scrollbar { display: none; }
 
-        .filter-btn {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            color: #888;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .filter-pill {
+            background: rgba(40, 40, 40, 0.6); /* Darker background for legibility */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 100px;
             font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            /* Fix for visual jitter */
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--accent-color);
+        .filter-pill:hover { 
+            background: rgba(60, 60, 60, 0.8); 
+            transform: scale(1.08); /* Slightly larger scale */
+            border-color: rgba(255, 255, 255, 0.3);
+            z-index: 10;
+        }
+        
+        .filter-pill.active {
+            background: #fff;
             color: #000;
-            box-shadow: 0 0 15px var(--accent-glow);
-            border-color: var(--accent-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* Stronger shadow */
+            transform: scale(1.08);
+            border-color: #fff;
         }
 
-        /* --- CONTAINER & GRID --- */
+        .filter-pill .material-symbols-rounded { font-size: 1.1rem; }
+
+        /* --- 4. GRID & CARDS --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            flex: 1;
+            padding: 20px 24px 80px;
             width: 100%;
         }
 
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 28px;
         }
 
-        /* --- GLASSMORPHISM CARD --- */
         .game-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px); /* Safari */
+            position: relative;
+            background: var(--glass-surface);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
             border: 1px solid var(--glass-border);
-            border-top: 1px solid rgba(255,255,255,0.15); /* Top highlight */
-            border-radius: 16px;
+            border-radius: 28px;
             overflow: hidden;
             text-decoration: none;
             color: inherit;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             flex-direction: column;
-            position: relative; /* For ribbon positioning */
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
 
         .game-card:hover {
-            transform: translateY(-7px);
-            border-color: rgba(255,255,255,0.3);
-            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.5);
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+            background: rgba(40, 40, 40, 0.75); /* Darker on hover for contrast */
         }
 
-        /* --- RIBBON (NEW!) --- */
-        .ribbon {
-            position: absolute;
-            top: 15px;
-            right: -28px;
-            width: 100px;
-            background: #ff0055;
-            color: white;
-            text-align: center;
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 5px 0;
-            transform: rotate(45deg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        /* --- CARD CONTENT --- */
+        /* Card Header */
         .card-header {
-            height: 100px;
+            height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
             position: relative;
+            /* Subtle dark gradient overlay to make icon pop */
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%);
         }
         
-        /* Subtle gradients behind emojis */
-        .header-lineup { background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2)); }
-        .header-imposter { background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2)); }
-        .header-buzz { background: linear-gradient(135deg, rgba(255, 8, 68, 0.2), rgba(255, 177, 153, 0.2)); }
-        .header-monopoly { background: linear-gradient(135deg, rgba(67, 233, 123, 0.2), rgba(56, 249, 215, 0.2)); }
-        .header-cm25 { background: linear-gradient(135deg, rgba(250, 112, 154, 0.2), rgba(254, 225, 64, 0.2)); }
+        /* Glow behind icon */
+        .card-header::before {
+            content: '';
+            position: absolute;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+        }
 
-        .card-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+        .accent-blue::before { background: var(--primary); }
+        .accent-purple::before { background: var(--accent-purple); }
+        .accent-pink::before { background: var(--accent-pink); }
+        .accent-green::before { background: var(--accent-green); }
+        .accent-orange::before { background: var(--accent-orange); }
+
+        .card-header .icon-large {
+            font-size: 5rem;
+            z-index: 2;
+            /* Solid white with shadow for max legibility */
+            color: #fff;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        }
+
+        /* Card Content */
+        .card-content {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
 
         .game-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #fff;
+            font-size: 1.6rem;
+            font-weight: 800;
             margin-bottom: 8px;
+            color: #fff;
+            letter-spacing: -0.5px;
         }
 
-        .primary-stats {
+        .stats-row {
             display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            color: #ccc;
-            font-weight: 600;
+            gap: 12px;
+            margin-bottom: 20px;
         }
+        
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #ccc;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-pill .material-symbols-rounded { font-size: 1rem; color: #fff; }
 
-        .tag-container {
+        /* Tag Cloud */
+        .tag-cloud {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
         .tag {
-            font-size: 0.7rem;
-            background-color: var(--tag-bg);
-            color: #aaa;
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
         .game-desc {
             font-size: 0.95rem;
-            color: #bbb;
-            margin-bottom: 25px;
+            color: var(--text-secondary); /* Using higher contrast var */
+            line-height: 1.6;
+            margin-bottom: 30px;
             flex: 1;
-            line-height: 1.5;
         }
 
-        .cta-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-            padding: 12px;
-            background-color: rgba(255,255,255,0.05);
-            color: var(--accent-color);
-            border: 1px solid rgba(0, 255, 157, 0.2);
-            border-radius: 8px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            transition: all 0.2s;
-        }
-        
-        .game-card:hover .cta-button {
-            background-color: var(--accent-color);
+        /* Button */
+        .ios-btn {
+            background: #fff;
             color: #000;
-            box-shadow: 0 0 15px var(--accent-glow);
+            padding: 14px 20px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .ios-btn:active { transform: scale(0.98); }
+
+        /* Ribbon */
+        .glass-ribbon {
+            position: absolute;
+            top: 24px; right: 0;
+            background: linear-gradient(135deg, #ff2d55, #ff375f);
+            color: white;
+            padding: 6px 16px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            border-radius: 100px 0 0 100px;
+            box-shadow: 0 4px 15px rgba(255, 45, 85, 0.3);
+            z-index: 10;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px;
-            font-size: 0.8rem;
-            color: #666;
-            border-top: 1px solid rgba(255,255,255,0.05);
+        footer { 
+            text-align: center; 
+            color: var(--text-tertiary); 
+            padding: 40px; 
+            font-size: 0.9rem;
+            font-weight: 500;
         }
-        footer a { color: #888; text-decoration: none; }
-        footer a:hover { color: #fff; }
+        footer a { color: var(--text-secondary); text-decoration: none; }
 
+        /* Mobile Adjustments */
         @media (max-width: 600px) {
-            .container { padding: 15px; }
-            h1 { font-size: 1.4rem; }
+            h1 { font-size: 2.5rem; }
+            .game-grid { grid-template-columns: 1fr; }
+            .filter-container { padding: 15px 20px; } /* Consistent mobile padding */
         }
     </style>
 </head>
 <body>
 
-    <!-- Animated Background Element -->
-    <div class="bg-animation"></div>
-
-    <header>
-        <h1>NOTALEC1'S ARCADE</h1>
-        <p>Web Games & Tools</p>
-    </header>
-
-    <!-- Filters -->
-    <div class="filter-container">
-        <button class="filter-btn active" onclick="filterGames('all')">All</button>
-        <button class="filter-btn" onclick="filterGames('mobile')">Mobile First</button>
-        <button class="filter-btn" onclick="filterGames('pvp')">PvP</button>
-        <button class="filter-btn" onclick="filterGames('strategy')">Strategy</button>
-        <button class="filter-btn" onclick="filterGames('tv')">TV Mode</button>
+    <!-- 1. Background -->
+    <div class="mesh-background">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+        <div class="mesh-blob blob-3"></div>
     </div>
 
+    <!-- 2. Header -->
+    <header>
+        <div class="super-title">Game Portfolio</div>
+        <h1>notalec1's Arcade</h1>
+    </header>
+
+    <!-- 3. Scrollable Filters -->
+    <div class="filter-scroll-wrapper">
+        <div class="filter-container">
+            <button class="filter-pill active" onclick="filterGames('all')">All</button>
+            <button class="filter-pill" onclick="filterGames('mobile')"><span class="material-symbols-rounded">smartphone</span> Mobile</button>
+            <button class="filter-pill" onclick="filterGames('pvp')"><span class="material-symbols-rounded">swords</span> PvP</button>
+            <button class="filter-pill" onclick="filterGames('coop')"><span class="material-symbols-rounded">handshake</span> Co-op</button>
+            <button class="filter-pill" onclick="filterGames('strategy')"><span class="material-symbols-rounded">psychology</span> Strategy</button>
+            <button class="filter-pill" onclick="filterGames('tv')"><span class="material-symbols-rounded">tv</span> TV Mode</button>
+            <button class="filter-pill" onclick="filterGames('leaderboard')"><span class="material-symbols-rounded">trophy</span> Ranked</button>
+        </div>
+    </div>
+
+    <!-- 4. Main Grid -->
     <main class="container">
         <div class="game-grid">
             
             <!-- LINEUP -->
-            <a href="https://notalec1.github.io/lineup" class="game-card" data-tags="coop strategy tv">
-                <div class="card-header header-lineup"><span>🔢</span></div>
+            <a href="https://notalec1.github.io/lineup" class="game-card accent-blue" data-tags="coop strategy tv leaderboard autosave tutorial">
+                <div class="card-header">
+                    <span class="material-symbols-rounded icon-large">group_work</span>
+                </div>
                 <div class="card-content">
                     <div class="game-title">Lineup</div>
-                    
-                    <div class="primary-stats">
-                        <span>👥 4-20+ Players</span>
-                        <span>⏱️ ~10 Mins</span>
+                    <div class="stats-row">
+                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 4-20+</div>
+                        <div class="stat-pill"><span class="material-symbols-rounded">timer</span> 10m</div>
                     </div>
-
-                    <div class="tag-container">
+                    <div class="tag-cloud">
                         <span class="tag">🤝 Co-op</span>
                         <span class="tag">🧠 Strategy</span>
                         <span class="tag">🏆 Leaderboard</span>
-                        <span class="tag">📺 TV Mode</span>
                         <span class="tag">💾 Auto-Save</span>
-                        <span class="tag">🎓 Tutorial</span>
                     </div>
-
                     <div class="game-desc">
-                        Scan a QR code to get a secret number. Work together to line up in order without revealing your exact digits.
+                        Scan a QR code to get a secret number. Work together to line up correctly without revealing digits.
                     </div>
-                    <div class="cta-button">Play Now <span>↗</span></div>
+                    <div class="ios-btn">
+                        Play Now <span class="material-symbols-rounded">north_east</span>
+                    </div>
                 </div>
             </a>
 
             <!-- THE IMPOSTER -->
-            <a href="https://notalec1.github.io/imposter" class="game-card" data-tags="pvp strategy mobile tv">
-                <div class="card-header header-imposter"><span>🤖</span></div>
+            <a href="https://notalec1.github.io/imposter" class="game-card accent-purple" data-tags="pvp strategy mobile tv host leaderboard deduction">
+                <div class="card-header">
+                    <span class="material-symbols-rounded icon-large">fingerprint</span>
+                </div>
                 <div class="card-content">
                     <div class="game-title">The Imposter</div>
-                    
-                    <div class="primary-stats">
-                        <span>👥 3-10 Players</span>
-                        <span>⏱️ ~15 Mins</span>
+                    <div class="stats-row">
+                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 3-10</div>
+                        <div class="stat-pill"><span class="material-symbols-rounded">timer</span> 15m</div>
                     </div>
-
-                    <div class="tag-container">
-                        <span class="tag">🕵️ Social Deduction</span>
+                    <div class="tag-cloud">
+                        <span class="tag">🕵️ Deduction</span>
                         <span class="tag">⚔️ PvP</span>
-                        <span class="tag">🧠 Strategy</span>
                         <span class="tag">📱 Mobile First</span>
-                        <span class="tag">📺 TV Mode</span>
                         <span class="tag">🛠️ Host Req.</span>
                     </div>
-
                     <div class="game-desc">
-                        Find the Glitch. A cyberpunk party game where Citizens know the secret word, but the Imposter must blend in.
+                        A cyberpunk party game. Citizens know the secret word; the Imposter must blend in. Find the glitch.
                     </div>
-                    <div class="cta-button">Enter Lobby <span>↗</span></div>
+                    <div class="ios-btn">
+                        Enter Lobby <span class="material-symbols-rounded">north_east</span>
+                    </div>
                 </div>
             </a>
 
             <!-- BUZZ-IN -->
-            <a href="https://notalec1.github.io/buzz-in" class="game-card" data-tags="pvp mobile tv strategy">
-                <div class="card-header header-buzz"><span>🚨</span></div>
+            <a href="https://notalec1.github.io/buzz-in" class="game-card accent-pink" data-tags="pvp mobile tv strategy reflexes leaderboard autosave host">
+                <div class="card-header">
+                    <span class="material-symbols-rounded icon-large">touch_app</span>
+                </div>
                 <div class="card-content">
                     <div class="game-title">Buzz-In</div>
-                    
-                    <div class="primary-stats">
-                        <span>👥 2+ Players</span>
-                        <span>⏱️ Real-Time</span>
+                    <div class="stats-row">
+                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 2+</div>
+                        <div class="stat-pill"><span class="material-symbols-rounded">bolt</span> Instant</div>
                     </div>
-
-                    <div class="tag-container">
+                    <div class="tag-cloud">
                         <span class="tag">⚔️ PvP</span>
                         <span class="tag">⚡ Reflexes</span>
-                        <span class="tag">📱 Mobile First</span>
+                        <span class="tag">🏆 Leaderboard</span>
                         <span class="tag">📺 TV Mode</span>
-                        <span class="tag">🧠 Strategy</span>
-                        <span class="tag">🛠️ Host Req.</span>
                     </div>
-
                     <div class="game-desc">
-                        A real-time trivia buzzer system. Turn phones into game show buzzers and track who rang in first.
+                        Real-time trivia buzzer. Turn phones into game show buzzers and track who rang in first.
                     </div>
-                    <div class="cta-button">Start Quiz <span>↗</span></div>
+                    <div class="ios-btn">
+                        Start Quiz <span class="material-symbols-rounded">north_east</span>
+                    </div>
                 </div>
             </a>
 
             <!-- MONOPOLY MANAGER -->
-            <a href="https://notalec1.github.io/monopoly-manager" class="game-card" data-tags="pvp mobile tv casual">
-                <div class="card-header header-monopoly"><span>🎩</span></div>
+            <a href="https://notalec1.github.io/monopoly-manager" class="game-card accent-green" data-tags="pvp mobile tv casual luck leaderboard autosave host">
+                <div class="card-header">
+                    <span class="material-symbols-rounded icon-large">account_balance</span>
+                </div>
                 <div class="card-content">
                     <div class="game-title">Monopoly Manager</div>
-                    
-                    <div class="primary-stats">
-                        <span>👥 2-8 Players</span>
-                        <span>⏱️ Companion</span>
+                    <div class="stats-row">
+                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 2-8</div>
+                        <div class="stat-pill"><span class="material-symbols-rounded">all_inclusive</span> Endless</div>
                     </div>
-
-                    <div class="tag-container">
+                    <div class="tag-cloud">
                         <span class="tag">⚔️ PvP</span>
                         <span class="tag">🍀 Luck</span>
-                        <span class="tag">👶 Casual</span>
                         <span class="tag">📱 Mobile First</span>
-                        <span class="tag">📺 TV Mode</span>
                         <span class="tag">💾 Auto-Save</span>
                     </div>
-
                     <div class="game-desc">
-                        A digital banker utility. Speed up board games by managing funds, properties, and jail status digitally.
+                        Digital banker utility. Manage properties, funds, and jail status to speed up board games.
                     </div>
-                    <div class="cta-button">Open Bank <span>↗</span></div>
+                    <div class="ios-btn">
+                        Open Bank <span class="material-symbols-rounded">north_east</span>
+                    </div>
                 </div>
             </a>
 
             <!-- CM25 -->
-            <a href="https://notalec1.github.io/cm25" class="game-card" data-tags="gallery private">
-                <!-- NEW RIBBON -->
-                <div class="ribbon">NEW</div>
-
-                <div class="card-header header-cm25"><span>🎄</span></div>
+            <a href="https://notalec1.github.io/cm25" class="game-card accent-orange" data-tags="gallery private">
+                <div class="glass-ribbon">NEW</div>
+                <div class="card-header">
+                    <span class="material-symbols-rounded icon-large">photo_library</span>
+                </div>
                 <div class="card-content">
                     <div class="game-title">CM25</div>
-                    
-                    <div class="primary-stats">
-                        <span>📂 Photo Gallery</span>
-                        <span>📅 Dec 2025</span>
+                    <div class="stats-row">
+                        <div class="stat-pill"><span class="material-symbols-rounded">folder</span> Gallery</div>
+                        <div class="stat-pill"><span class="material-symbols-rounded">event</span> Dec 2025</div>
                     </div>
-
-                    <div class="tag-container">
+                    <div class="tag-cloud">
                         <span class="tag">🔒 Private</span>
                         <span class="tag">📸 Memories</span>
                         <span class="tag">💾 Cloud</span>
                     </div>
-
                     <div class="game-desc">
-                        A digital time capsule library containing all photos and memories captured during the Dec 24/25 holidays.
+                        A digital time capsule library containing all photos and memories captured during the holidays.
                     </div>
-                    <div class="cta-button">View Gallery <span>↗</span></div>
+                    <div class="ios-btn">
+                        View Gallery <span class="material-symbols-rounded">north_east</span>
+                    </div>
                 </div>
             </a>
 
@@ -422,29 +511,37 @@
     </main>
 
     <footer>
-        <p>Built by <a href="https://github.com/notalec1">NotAlec1</a></p>
+        <p>Designed by <a href="https://github.com/notalec1">notalec1</a> &bull; 2025</p>
     </footer>
 
-    <!-- Filter Logic Script -->
     <script>
         function filterGames(category) {
-            // Update Active Button
-            const buttons = document.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            // 1. Update Buttons
+            document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
 
-            // Filter Cards
+            // 2. Filter Cards with Fade Effect
             const cards = document.querySelectorAll('.game-card');
+            
             cards.forEach(card => {
                 const tags = card.getAttribute('data-tags');
-                if (category === 'all' || (tags && tags.includes(category))) {
+                const isMatch = category === 'all' || (tags && tags.includes(category));
+
+                if (isMatch) {
                     card.style.display = 'flex';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0) scale(1)';
+                    }, 50);
                 } else {
-                    card.style.display = 'none';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px) scale(0.95)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300); 
                 }
             });
         }
     </script>
-
 </body>
 </html>
