@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --bg-color: #0f0f13;
+            --card-bg: #1a1a20;
+            --text-color: #e0e0e0;
+            --accent-color: #00ff9d; /* Cyberpunk Green */
+            --accent-glow: rgba(0, 255, 157, 0.4);
+            --secondary-accent: #ff0055;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--accent-color);
+            text-shadow: 3px 3px 0px var(--secondary-accent);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Grid Layout */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Game Card */
+        .game-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+        }
+
+        /* Card Icon/Banner Area */
+        .card-header {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Distinctive gradients for each card header */
+        .header-lineup { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .header-imposter { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .header-buzz { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
+        .header-monopoly { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .header-cm25 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+
+        .card-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .game-desc {
+            font-size: 0.95rem;
+            color: #ccc;
+            margin-bottom: 20px;
+            flex: 1; /* Pushes the button down */
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2a2a35;
+            color: var(--accent-color);
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        .game-card:hover .cta-button {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            font-size: 0.8rem;
+            color: #555;
+            border-top: 1px solid #222;
+        }
+
+        footer a { color: #777; }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.4rem; }
+            .container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NOTALEC1'S ARCADE</h1>
+        <p>Web Games & Tools</p>
+    </header>
+
+    <main class="container">
+        <div class="game-grid">
+            
+            <!-- Game 1: Lineup -->
+            <a href="https://notalec1.github.io/lineup" class="game-card">
+                <div class="card-header header-lineup">
+                    <span>🔢</span>
+                </div>
+                <div class="card-content">
+                    <div class="game-title">Lineup</div>
+                    <div class="game-desc">
+                        A social bluffing game. Scan a QR code to get a secret number, then communicate with the group to line up in the correct order—without revealing your exact digit.
+                    </div>
+                    <div class="cta-button">Play Now</div>
+                </div>
+            </a>
+
+            <!-- Game 2: The Imposter -->
+            <a href="https://notalec1.github.io/imposter" class="game-card">
+                <div class="card-header header-imposter">
+                    <span>🤖</span>
+                </div>
+                <div class="card-content">
+                    <div class="game-title">The Imposter</div>
+                    <div class="game-desc">
+                        A cyberpunk social deduction game. Citizens know the secret word; the Imposter must blend in. Watch out for "The Glitch"—an agent of chaos trying to get caught.
+                    </div>
+                    <div class="cta-button">Enter The Lobby</div>
+                </div>
+            </a>
+
+            <!-- Game 3: Buzz-In -->
+            <a href="https://notalec1.github.io/buzz-in" class="game-card">
+                <div class="card-header header-buzz">
+                    <span>🚨</span>
+                </div>
+                <div class="card-content">
+                    <div class="game-title">Buzz-In</div>
+                    <div class="game-desc">
+                        A real-time trivia buzzer system powered by React & Firebase. Players turn their phones into buzzers to answer questions on the big screen.
+                    </div>
+                    <div class="cta-button">Start Quiz</div>
+                </div>
+            </a>
+
+            <!-- Game 4: Monopoly Manager -->
+            <a href="https://notalec1.github.io/monopoly-manager" class="game-card">
+                <div class="card-header header-monopoly">
+                    <span>🎩</span>
+                </div>
+                <div class="card-content">
+                    <div class="game-title">Monopoly Manager</div>
+                    <div class="game-desc">
+                        A dedicated digital banker utility. Manage properties, track funds, and handle jail status to speed up your physical board game sessions.
+                    </div>
+                    <div class="cta-button">Manage Bank</div>
+                </div>
+            </a>
+
+            <!-- Game 5: CM25 -->
+            <a href="https://notalec1.github.io/cm25" class="game-card">
+                <div class="card-header header-cm25">
+                    <span>🎄</span>
+                </div>
+                <div class="card-content">
+                    <div class="game-title">CM25</div>
+                    <div class="game-desc">
+                        Christmas 2025. A digital time capsule library containing all photos and memories captured during the Dec 24/25 holidays.
+                    </div>
+                    <div class="cta-button">View Gallery</div>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>Built by <a href="https://github.com/notalec1">NotAlec1</a></p>
+    </footer>
+
+</body>
+</html>
