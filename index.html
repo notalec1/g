@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcade</title>
+    <title>NotAlec1's Arcade</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
@@ -17,6 +17,7 @@
             --accent-color: #00ff9d; /* Cyberpunk Green */
             --accent-glow: rgba(0, 255, 157, 0.4);
             --secondary-accent: #ff0055;
+            --stat-color: #888;
         }
 
         * {
@@ -119,15 +120,36 @@
         .game-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 5px; /* Reduced to fit stats */
             color: #fff;
+        }
+
+        /* NEW: Stats Row Styling */
+        .game-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.8rem;
+            color: var(--stat-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
+            border-radius: 4px;
         }
 
         .game-desc {
             font-size: 0.95rem;
             color: #ccc;
             margin-bottom: 20px;
-            flex: 1; /* Pushes the button down */
+            flex: 1; 
         }
 
         .cta-button {
@@ -164,6 +186,7 @@
         @media (max-width: 600px) {
             h1 { font-size: 1.4rem; }
             .container { padding: 15px; }
+            .game-stats { flex-wrap: wrap; gap: 8px; }
         }
     </style>
 </head>
@@ -184,6 +207,13 @@
                 </div>
                 <div class="card-content">
                     <div class="game-title">Lineup</div>
+                    
+                    <!-- STATS -->
+                    <div class="game-stats">
+                        <div class="stat-item">👥 4-20+ Players</div>
+                        <div class="stat-item">⏱️ ~10 Mins</div>
+                    </div>
+
                     <div class="game-desc">
                         A social bluffing game. Scan a QR code to get a secret number, then communicate with the group to line up in the correct order—without revealing your exact digit.
                     </div>
@@ -198,6 +228,13 @@
                 </div>
                 <div class="card-content">
                     <div class="game-title">The Imposter</div>
+                    
+                    <!-- STATS -->
+                    <div class="game-stats">
+                        <div class="stat-item">👥 3-10 Players</div>
+                        <div class="stat-item">⏱️ ~15 Mins</div>
+                    </div>
+
                     <div class="game-desc">
                         A cyberpunk social deduction game. Citizens know the secret word; the Imposter must blend in. Watch out for "The Glitch"—an agent of chaos trying to get caught.
                     </div>
@@ -212,6 +249,13 @@
                 </div>
                 <div class="card-content">
                     <div class="game-title">Buzz-In</div>
+                    
+                    <!-- STATS -->
+                    <div class="game-stats">
+                        <div class="stat-item">👥 2+ Players</div>
+                        <div class="stat-item">⏱️ Real-Time</div>
+                    </div>
+
                     <div class="game-desc">
                         A real-time trivia buzzer system powered by React & Firebase. Players turn their phones into buzzers to answer questions on the big screen.
                     </div>
@@ -226,6 +270,13 @@
                 </div>
                 <div class="card-content">
                     <div class="game-title">Monopoly Manager</div>
+                    
+                    <!-- STATS -->
+                    <div class="game-stats">
+                        <div class="stat-item">👥 2-8 Players</div>
+                        <div class="stat-item">⏱️ Companion</div>
+                    </div>
+
                     <div class="game-desc">
                         A dedicated digital banker utility. Manage properties, track funds, and handle jail status to speed up your physical board game sessions.
                     </div>
@@ -240,6 +291,13 @@
                 </div>
                 <div class="card-content">
                     <div class="game-title">CM25</div>
+                    
+                    <!-- STATS -->
+                    <div class="game-stats">
+                        <div class="stat-item">📂 Photo Gallery</div>
+                        <div class="stat-item">📅 Dec 2025</div>
+                    </div>
+
                     <div class="game-desc">
                         Christmas 2025. A digital time capsule library containing all photos and memories captured during the Dec 24/25 holidays.
                     </div>
