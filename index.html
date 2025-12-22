@@ -9,119 +9,193 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- CSS STYLES --- */
+        /* --- VARIABLES --- */
         :root {
-            --bg-color: #0f0f13;
-            --card-bg: #1a1a20;
-            --text-color: #e0e0e0;
             --accent-color: #00ff9d; 
             --accent-glow: rgba(0, 255, 157, 0.4);
-            --tag-bg: #25252b;
-            --tag-text: #aaa;
+            --glass-bg: rgba(25, 25, 30, 0.65); /* Translucent dark */
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-color: #e0e0e0;
+            --tag-bg: rgba(0, 0, 0, 0.4);
         }
 
+        /* --- RESET & BASE --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Space Grotesk', sans-serif;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             line-height: 1.5;
+            overflow-x: hidden;
         }
 
-        /* Header */
+        /* --- ANIMATED BACKGROUND --- */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(-45deg, #0b0b0f, #180a18, #0a1618, #050505);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0b0f; }
+        ::-webkit-scrollbar-thumb { 
+            background: #333; 
+            border-radius: 4px; 
+            border: 1px solid #000;
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+
+        /* --- HEADER --- */
         header {
             text-align: center;
-            padding: 60px 20px 40px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+            padding: 60px 20px 30px;
         }
 
         h1 {
             font-family: 'Press Start 2P', cursive;
             color: var(--accent-color);
-            text-shadow: 3px 3px 0px #ff0055;
+            text-shadow: 0 0 15px var(--accent-glow);
             font-size: 1.8rem;
             margin-bottom: 15px;
             letter-spacing: 2px;
         }
 
-        header p { color: #888; font-size: 1.1rem; }
+        header p { color: #aaa; font-size: 1.1rem; }
 
-        /* Container */
+        /* --- FILTERS --- */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .filter-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: #888;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+            border-color: var(--accent-color);
+        }
+
+        /* --- CONTAINER & GRID --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             flex: 1;
+            width: 100%;
         }
 
-        /* Grid */
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider cards */
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
         }
 
-        /* Card */
+        /* --- GLASSMORPHISM CARD --- */
         .game-card {
-            background-color: var(--card-bg);
-            border: 1px solid #333;
-            border-radius: 12px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); /* Safari */
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255,255,255,0.15); /* Top highlight */
+            border-radius: 16px;
             overflow: hidden;
             text-decoration: none;
             color: inherit;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
+            position: relative; /* For ribbon positioning */
         }
 
         .game-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 30px -10px var(--accent-glow);
+            transform: translateY(-7px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.5);
         }
 
-        /* Header Images */
+        /* --- RIBBON (NEW!) --- */
+        .ribbon {
+            position: absolute;
+            top: 15px;
+            right: -28px;
+            width: 100px;
+            background: #ff0055;
+            color: white;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 5px 0;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        /* --- CARD CONTENT --- */
         .card-header {
             height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
+            position: relative;
         }
-        .header-lineup { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .header-imposter { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .header-buzz { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
-        .header-monopoly { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .header-cm25 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        
+        /* Subtle gradients behind emojis */
+        .header-lineup { background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2)); }
+        .header-imposter { background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2)); }
+        .header-buzz { background: linear-gradient(135deg, rgba(255, 8, 68, 0.2), rgba(255, 177, 153, 0.2)); }
+        .header-monopoly { background: linear-gradient(135deg, rgba(67, 233, 123, 0.2), rgba(56, 249, 215, 0.2)); }
+        .header-cm25 { background: linear-gradient(135deg, rgba(250, 112, 154, 0.2), rgba(254, 225, 64, 0.2)); }
 
-        .card-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .card-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
 
         .game-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #fff;
             margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        /* Primary Stats Row (Players/Time) */
         .primary-stats {
             display: flex;
             gap: 15px;
             margin-bottom: 12px;
             font-size: 0.85rem;
-            color: #fff;
+            color: #ccc;
             font-weight: 600;
         }
-        .primary-stats span { opacity: 0.9; }
 
-        /* Tag Cloud - The solution to clutter */
         .tag-container {
             display: flex;
             flex-wrap: wrap;
@@ -132,39 +206,42 @@
         .tag {
             font-size: 0.7rem;
             background-color: var(--tag-bg);
-            color: var(--tag-text);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid #333;
-            white-space: nowrap;
+            color: #aaa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .game-desc {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #bbb;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex: 1;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .cta-button {
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
             width: 100%;
-            padding: 10px;
-            background-color: #2a2a35;
+            padding: 12px;
+            background-color: rgba(255,255,255,0.05);
             color: var(--accent-color);
-            border-radius: 6px;
-            text-align: center;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            border-radius: 8px;
             font-weight: bold;
             text-transform: uppercase;
             font-size: 0.8rem;
             letter-spacing: 1px;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
         
         .game-card:hover .cta-button {
             background-color: var(--accent-color);
             color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         /* Footer */
@@ -172,29 +249,42 @@
             text-align: center;
             padding: 40px;
             font-size: 0.8rem;
-            color: #555;
-            border-top: 1px solid #222;
+            color: #666;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
-        footer a { color: #777; }
+        footer a { color: #888; text-decoration: none; }
+        footer a:hover { color: #fff; }
 
         @media (max-width: 600px) {
-            .container { padding: 10px; }
+            .container { padding: 15px; }
             h1 { font-size: 1.4rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Animated Background Element -->
+    <div class="bg-animation"></div>
+
     <header>
         <h1>NOTALEC1'S ARCADE</h1>
         <p>Web Games & Tools</p>
     </header>
 
+    <!-- Filters -->
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterGames('all')">All</button>
+        <button class="filter-btn" onclick="filterGames('mobile')">Mobile First</button>
+        <button class="filter-btn" onclick="filterGames('pvp')">PvP</button>
+        <button class="filter-btn" onclick="filterGames('strategy')">Strategy</button>
+        <button class="filter-btn" onclick="filterGames('tv')">TV Mode</button>
+    </div>
+
     <main class="container">
         <div class="game-grid">
             
             <!-- LINEUP -->
-            <a href="https://notalec1.github.io/lineup" class="game-card">
+            <a href="https://notalec1.github.io/lineup" class="game-card" data-tags="coop strategy tv">
                 <div class="card-header header-lineup"><span>🔢</span></div>
                 <div class="card-content">
                     <div class="game-title">Lineup</div>
@@ -216,12 +306,12 @@
                     <div class="game-desc">
                         Scan a QR code to get a secret number. Work together to line up in order without revealing your exact digits.
                     </div>
-                    <div class="cta-button">Play Now</div>
+                    <div class="cta-button">Play Now <span>↗</span></div>
                 </div>
             </a>
 
             <!-- THE IMPOSTER -->
-            <a href="https://notalec1.github.io/imposter" class="game-card">
+            <a href="https://notalec1.github.io/imposter" class="game-card" data-tags="pvp strategy mobile tv">
                 <div class="card-header header-imposter"><span>🤖</span></div>
                 <div class="card-content">
                     <div class="game-title">The Imposter</div>
@@ -238,18 +328,17 @@
                         <span class="tag">📱 Mobile First</span>
                         <span class="tag">📺 TV Mode</span>
                         <span class="tag">🛠️ Host Req.</span>
-                        <span class="tag">🏆 Leaderboard</span>
                     </div>
 
                     <div class="game-desc">
                         Find the Glitch. A cyberpunk party game where Citizens know the secret word, but the Imposter must blend in.
                     </div>
-                    <div class="cta-button">Enter Lobby</div>
+                    <div class="cta-button">Enter Lobby <span>↗</span></div>
                 </div>
             </a>
 
             <!-- BUZZ-IN -->
-            <a href="https://notalec1.github.io/buzz-in" class="game-card">
+            <a href="https://notalec1.github.io/buzz-in" class="game-card" data-tags="pvp mobile tv strategy">
                 <div class="card-header header-buzz"><span>🚨</span></div>
                 <div class="card-content">
                     <div class="game-title">Buzz-In</div>
@@ -264,21 +353,19 @@
                         <span class="tag">⚡ Reflexes</span>
                         <span class="tag">📱 Mobile First</span>
                         <span class="tag">📺 TV Mode</span>
-                        <span class="tag">🏆 Leaderboard</span>
                         <span class="tag">🧠 Strategy</span>
-                        <span class="tag">💾 Auto-Save</span>
                         <span class="tag">🛠️ Host Req.</span>
                     </div>
 
                     <div class="game-desc">
-                        A real-time trivia buzzer system. Turn phones into game show buzzers and track who rang in first on the big screen.
+                        A real-time trivia buzzer system. Turn phones into game show buzzers and track who rang in first.
                     </div>
-                    <div class="cta-button">Start Quiz</div>
+                    <div class="cta-button">Start Quiz <span>↗</span></div>
                 </div>
             </a>
 
             <!-- MONOPOLY MANAGER -->
-            <a href="https://notalec1.github.io/monopoly-manager" class="game-card">
+            <a href="https://notalec1.github.io/monopoly-manager" class="game-card" data-tags="pvp mobile tv casual">
                 <div class="card-header header-monopoly"><span>🎩</span></div>
                 <div class="card-content">
                     <div class="game-title">Monopoly Manager</div>
@@ -295,19 +382,20 @@
                         <span class="tag">📱 Mobile First</span>
                         <span class="tag">📺 TV Mode</span>
                         <span class="tag">💾 Auto-Save</span>
-                        <span class="tag">🏆 Leaderboard</span>
-                        <span class="tag">🛠️ Host Req.</span>
                     </div>
 
                     <div class="game-desc">
                         A digital banker utility. Speed up board games by managing funds, properties, and jail status digitally.
                     </div>
-                    <div class="cta-button">Open Bank</div>
+                    <div class="cta-button">Open Bank <span>↗</span></div>
                 </div>
             </a>
 
             <!-- CM25 -->
-            <a href="https://notalec1.github.io/cm25" class="game-card">
+            <a href="https://notalec1.github.io/cm25" class="game-card" data-tags="gallery private">
+                <!-- NEW RIBBON -->
+                <div class="ribbon">NEW</div>
+
                 <div class="card-header header-cm25"><span>🎄</span></div>
                 <div class="card-content">
                     <div class="game-title">CM25</div>
@@ -326,7 +414,7 @@
                     <div class="game-desc">
                         A digital time capsule library containing all photos and memories captured during the Dec 24/25 holidays.
                     </div>
-                    <div class="cta-button">View Gallery</div>
+                    <div class="cta-button">View Gallery <span>↗</span></div>
                 </div>
             </a>
 
@@ -336,6 +424,27 @@
     <footer>
         <p>Built by <a href="https://github.com/notalec1">NotAlec1</a></p>
     </footer>
+
+    <!-- Filter Logic Script -->
+    <script>
+        function filterGames(category) {
+            // Update Active Button
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filter Cards
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                const tags = card.getAttribute('data-tags');
+                if (category === 'all' || (tags && tags.includes(category))) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>
