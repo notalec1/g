@@ -6,7 +6,7 @@
     <title>NotAlec1's Arcade</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* --- CSS STYLES --- */
@@ -14,17 +14,13 @@
             --bg-color: #0f0f13;
             --card-bg: #1a1a20;
             --text-color: #e0e0e0;
-            --accent-color: #00ff9d; /* Cyberpunk Green */
+            --accent-color: #00ff9d; 
             --accent-glow: rgba(0, 255, 157, 0.4);
-            --secondary-accent: #ff0055;
-            --stat-color: #888;
+            --tag-bg: #25252b;
+            --tag-text: #aaa;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-color);
@@ -33,7 +29,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         /* Header */
@@ -46,33 +42,30 @@
         h1 {
             font-family: 'Press Start 2P', cursive;
             color: var(--accent-color);
-            text-shadow: 3px 3px 0px var(--secondary-accent);
+            text-shadow: 3px 3px 0px #ff0055;
             font-size: 1.8rem;
             margin-bottom: 15px;
             letter-spacing: 2px;
         }
 
-        header p {
-            color: #888;
-            font-size: 1.1rem;
-        }
+        header p { color: #888; font-size: 1.1rem; }
 
-        /* Main Container */
+        /* Container */
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             flex: 1;
         }
 
-        /* Grid Layout */
+        /* Grid */
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Slightly wider cards */
             gap: 25px;
         }
 
-        /* Game Card */
+        /* Card */
         .game-card {
             background-color: var(--card-bg);
             border: 1px solid #333;
@@ -81,7 +74,6 @@
             text-decoration: none;
             color: inherit;
             transition: all 0.3s ease;
-            position: relative;
             display: flex;
             flex-direction: column;
         }
@@ -92,69 +84,73 @@
             box-shadow: 0 10px 30px -10px var(--accent-glow);
         }
 
-        /* Card Icon/Banner Area */
+        /* Header Images */
         .card-header {
-            height: 120px;
+            height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
-            position: relative;
-            overflow: hidden;
+            font-size: 3rem;
         }
-
-        /* Distinctive gradients for each card header */
         .header-lineup { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .header-imposter { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .header-buzz { background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%); }
         .header-monopoly { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
         .header-cm25 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
 
-        .card-content {
-            padding: 25px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
+        .card-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
 
         .game-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 5px; /* Reduced to fit stats */
             color: #fff;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* NEW: Stats Row Styling */
-        .game-stats {
+        /* Primary Stats Row (Players/Time) */
+        .primary-stats {
             display: flex;
             gap: 15px;
-            margin-bottom: 15px;
-            font-size: 0.8rem;
-            color: var(--stat-color);
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            color: #fff;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        }
+        .primary-stats span { opacity: 0.9; }
+
+        /* Tag Cloud - The solution to clutter */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 15px;
         }
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.05);
+        .tag {
+            font-size: 0.7rem;
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
             padding: 4px 8px;
             border-radius: 4px;
+            border: 1px solid #333;
+            white-space: nowrap;
         }
 
         .game-desc {
-            font-size: 0.95rem;
-            color: #ccc;
+            font-size: 0.9rem;
+            color: #bbb;
             margin-bottom: 20px;
-            flex: 1; 
+            flex: 1;
+            line-height: 1.4;
         }
 
         .cta-button {
-            display: inline-block;
-            padding: 10px 20px;
+            display: block;
+            width: 100%;
+            padding: 10px;
             background-color: #2a2a35;
             color: var(--accent-color);
             border-radius: 6px;
@@ -165,7 +161,7 @@
             letter-spacing: 1px;
             transition: background 0.2s;
         }
-
+        
         .game-card:hover .cta-button {
             background-color: var(--accent-color);
             color: #000;
@@ -179,14 +175,11 @@
             color: #555;
             border-top: 1px solid #222;
         }
-
         footer a { color: #777; }
 
-        /* Responsive adjustments */
         @media (max-width: 600px) {
+            .container { padding: 10px; }
             h1 { font-size: 1.4rem; }
-            .container { padding: 15px; }
-            .game-stats { flex-wrap: wrap; gap: 8px; }
         }
     </style>
 </head>
@@ -200,106 +193,138 @@
     <main class="container">
         <div class="game-grid">
             
-            <!-- Game 1: Lineup -->
+            <!-- LINEUP -->
             <a href="https://notalec1.github.io/lineup" class="game-card">
-                <div class="card-header header-lineup">
-                    <span>🔢</span>
-                </div>
+                <div class="card-header header-lineup"><span>🔢</span></div>
                 <div class="card-content">
                     <div class="game-title">Lineup</div>
                     
-                    <!-- STATS -->
-                    <div class="game-stats">
-                        <div class="stat-item">👥 4-20+ Players</div>
-                        <div class="stat-item">⏱️ ~10 Mins</div>
+                    <div class="primary-stats">
+                        <span>👥 4-20+ Players</span>
+                        <span>⏱️ ~10 Mins</span>
+                    </div>
+
+                    <div class="tag-container">
+                        <span class="tag">🤝 Co-op</span>
+                        <span class="tag">🧠 Strategy</span>
+                        <span class="tag">🏆 Leaderboard</span>
+                        <span class="tag">📺 TV Mode</span>
+                        <span class="tag">💾 Auto-Save</span>
+                        <span class="tag">🎓 Tutorial</span>
                     </div>
 
                     <div class="game-desc">
-                        A social bluffing game. Scan a QR code to get a secret number, then communicate with the group to line up in the correct order—without revealing your exact digit.
+                        Scan a QR code to get a secret number. Work together to line up in order without revealing your exact digits.
                     </div>
                     <div class="cta-button">Play Now</div>
                 </div>
             </a>
 
-            <!-- Game 2: The Imposter -->
+            <!-- THE IMPOSTER -->
             <a href="https://notalec1.github.io/imposter" class="game-card">
-                <div class="card-header header-imposter">
-                    <span>🤖</span>
-                </div>
+                <div class="card-header header-imposter"><span>🤖</span></div>
                 <div class="card-content">
                     <div class="game-title">The Imposter</div>
                     
-                    <!-- STATS -->
-                    <div class="game-stats">
-                        <div class="stat-item">👥 3-10 Players</div>
-                        <div class="stat-item">⏱️ ~15 Mins</div>
+                    <div class="primary-stats">
+                        <span>👥 3-10 Players</span>
+                        <span>⏱️ ~15 Mins</span>
+                    </div>
+
+                    <div class="tag-container">
+                        <span class="tag">🕵️ Social Deduction</span>
+                        <span class="tag">⚔️ PvP</span>
+                        <span class="tag">🧠 Strategy</span>
+                        <span class="tag">📱 Mobile First</span>
+                        <span class="tag">📺 TV Mode</span>
+                        <span class="tag">🛠️ Host Req.</span>
+                        <span class="tag">🏆 Leaderboard</span>
                     </div>
 
                     <div class="game-desc">
-                        A cyberpunk social deduction game. Citizens know the secret word; the Imposter must blend in. Watch out for "The Glitch"—an agent of chaos trying to get caught.
+                        Find the Glitch. A cyberpunk party game where Citizens know the secret word, but the Imposter must blend in.
                     </div>
-                    <div class="cta-button">Enter The Lobby</div>
+                    <div class="cta-button">Enter Lobby</div>
                 </div>
             </a>
 
-            <!-- Game 3: Buzz-In -->
+            <!-- BUZZ-IN -->
             <a href="https://notalec1.github.io/buzz-in" class="game-card">
-                <div class="card-header header-buzz">
-                    <span>🚨</span>
-                </div>
+                <div class="card-header header-buzz"><span>🚨</span></div>
                 <div class="card-content">
                     <div class="game-title">Buzz-In</div>
                     
-                    <!-- STATS -->
-                    <div class="game-stats">
-                        <div class="stat-item">👥 2+ Players</div>
-                        <div class="stat-item">⏱️ Real-Time</div>
+                    <div class="primary-stats">
+                        <span>👥 2+ Players</span>
+                        <span>⏱️ Real-Time</span>
+                    </div>
+
+                    <div class="tag-container">
+                        <span class="tag">⚔️ PvP</span>
+                        <span class="tag">⚡ Reflexes</span>
+                        <span class="tag">📱 Mobile First</span>
+                        <span class="tag">📺 TV Mode</span>
+                        <span class="tag">🏆 Leaderboard</span>
+                        <span class="tag">🧠 Strategy</span>
+                        <span class="tag">💾 Auto-Save</span>
+                        <span class="tag">🛠️ Host Req.</span>
                     </div>
 
                     <div class="game-desc">
-                        A real-time trivia buzzer system powered by React & Firebase. Players turn their phones into buzzers to answer questions on the big screen.
+                        A real-time trivia buzzer system. Turn phones into game show buzzers and track who rang in first on the big screen.
                     </div>
                     <div class="cta-button">Start Quiz</div>
                 </div>
             </a>
 
-            <!-- Game 4: Monopoly Manager -->
+            <!-- MONOPOLY MANAGER -->
             <a href="https://notalec1.github.io/monopoly-manager" class="game-card">
-                <div class="card-header header-monopoly">
-                    <span>🎩</span>
-                </div>
+                <div class="card-header header-monopoly"><span>🎩</span></div>
                 <div class="card-content">
                     <div class="game-title">Monopoly Manager</div>
                     
-                    <!-- STATS -->
-                    <div class="game-stats">
-                        <div class="stat-item">👥 2-8 Players</div>
-                        <div class="stat-item">⏱️ Companion</div>
+                    <div class="primary-stats">
+                        <span>👥 2-8 Players</span>
+                        <span>⏱️ Companion</span>
+                    </div>
+
+                    <div class="tag-container">
+                        <span class="tag">⚔️ PvP</span>
+                        <span class="tag">🍀 Luck</span>
+                        <span class="tag">👶 Casual</span>
+                        <span class="tag">📱 Mobile First</span>
+                        <span class="tag">📺 TV Mode</span>
+                        <span class="tag">💾 Auto-Save</span>
+                        <span class="tag">🏆 Leaderboard</span>
+                        <span class="tag">🛠️ Host Req.</span>
                     </div>
 
                     <div class="game-desc">
-                        A dedicated digital banker utility. Manage properties, track funds, and handle jail status to speed up your physical board game sessions.
+                        A digital banker utility. Speed up board games by managing funds, properties, and jail status digitally.
                     </div>
-                    <div class="cta-button">Manage Bank</div>
+                    <div class="cta-button">Open Bank</div>
                 </div>
             </a>
 
-            <!-- Game 5: CM25 -->
+            <!-- CM25 -->
             <a href="https://notalec1.github.io/cm25" class="game-card">
-                <div class="card-header header-cm25">
-                    <span>🎄</span>
-                </div>
+                <div class="card-header header-cm25"><span>🎄</span></div>
                 <div class="card-content">
                     <div class="game-title">CM25</div>
                     
-                    <!-- STATS -->
-                    <div class="game-stats">
-                        <div class="stat-item">📂 Photo Gallery</div>
-                        <div class="stat-item">📅 Dec 2025</div>
+                    <div class="primary-stats">
+                        <span>📂 Photo Gallery</span>
+                        <span>📅 Dec 2025</span>
+                    </div>
+
+                    <div class="tag-container">
+                        <span class="tag">🔒 Private</span>
+                        <span class="tag">📸 Memories</span>
+                        <span class="tag">💾 Cloud</span>
                     </div>
 
                     <div class="game-desc">
-                        Christmas 2025. A digital time capsule library containing all photos and memories captured during the Dec 24/25 holidays.
+                        A digital time capsule library containing all photos and memories captured during the Dec 24/25 holidays.
                     </div>
                     <div class="cta-button">View Gallery</div>
                 </div>
