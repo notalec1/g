@@ -5,30 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>notalec1's Arcade</title>
     
+    <!-- PWA MANIFEST -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="icon-192.png"> <!-- You will need to add an icon later -->
+
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
 
     <style>
-        /* --- iOS 26 LIQUID GLASS THEME (FIXED) --- */
+        /* --- iOS 26 LIQUID GLASS THEME --- */
         :root {
-            /* Palette */
-            --glass-surface: rgba(20, 20, 20, 0.45); /* Darker for better text contrast */
+            --glass-surface: rgba(20, 20, 20, 0.45);
             --glass-border: rgba(255, 255, 255, 0.15);
             --glass-highlight: rgba(255, 255, 255, 0.25);
             --glass-blur: 40px;
-            
             --primary: #0a84ff;
             --accent-purple: #bf5af2;
             --accent-pink: #ff375f;
             --accent-green: #30d158;
             --accent-orange: #ff9f0a;
-            
-            /* Typography - Improved Readability */
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.85); /* Increased from 0.6 */
-            --text-tertiary: rgba(255, 255, 255, 0.6);  /* Increased from 0.4 */
+            --text-secondary: rgba(255, 255, 255, 0.85);
+            --text-tertiary: rgba(255, 255, 255, 0.6);
         }
 
         /* --- RESET & BASE --- */
@@ -42,6 +43,7 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            overscroll-behavior-y: none; /* Mobile Pull Refresh Fix */
         }
 
         /* --- 1. LIVING MESH BACKGROUND --- */
@@ -61,7 +63,6 @@
             animation: meshFloat 12s infinite alternate ease-in-out;
         }
 
-        /* Blob Configurations */
         .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: #0040dd; animation-duration: 14s; }
         .blob-2 { bottom: -10%; right: -10%; width: 70vw; height: 70vw; background: #4800b8; animation-duration: 18s; }
         .blob-3 { top: 30%; left: 40%; width: 45vw; height: 45vw; background: #b80046; animation-duration: 22s; opacity: 0.4; }
@@ -71,9 +72,9 @@
             100% { transform: translate(20px, -20px) scale(1.05); }
         }
 
-        /* --- 2. HEADER --- */
+        /* --- 2. HEADER & SEARCH --- */
         header {
-            padding: 80px 24px 20px;
+            padding: 80px 24px 10px;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
@@ -95,21 +96,54 @@
             background: linear-gradient(180deg, #fff 20%, rgba(255,255,255,0.7) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
+            margin-bottom: 25px;
             line-height: 1.1;
         }
 
-        /* --- 3. FILTER CONTAINER (FIXED CLIPPING) --- */
+        /* Search Bar */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(40, 40, 40, 0.6);
+            border: 1px solid var(--glass-border);
+            padding: 14px 48px; /* Room for icon */
+            border-radius: 16px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(60, 60, 60, 0.8);
+            border-color: #fff;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+
+        /* --- 3. FILTER CONTAINER --- */
         .filter-scroll-wrapper {
             position: sticky;
             top: 0;
             z-index: 100;
-            /* Added vertical padding to wrapper to prevent clip on scroll */
             padding: 10px 0; 
             background: rgba(0,0,0,0.01);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            /* Soft fade mask on sides */
             mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
         }
@@ -118,7 +152,6 @@
             display: flex;
             gap: 12px;
             overflow-x: auto;
-            /* CRITICAL FIX: Increased padding top/bottom prevents hover scale cutoff */
             padding: 15px 24px; 
             scroll-behavior: smooth;
             -ms-overflow-style: none;
@@ -128,7 +161,7 @@
         .filter-container::-webkit-scrollbar { display: none; }
 
         .filter-pill {
-            background: rgba(40, 40, 40, 0.6); /* Darker background for legibility */
+            background: rgba(40, 40, 40, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: var(--text-secondary);
             padding: 10px 20px;
@@ -137,27 +170,24 @@
             font-weight: 600;
             white-space: nowrap;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
             display: flex;
             align-items: center;
             gap: 8px;
-            /* Fix for visual jitter */
-            backface-visibility: hidden;
-            transform: translateZ(0);
+            user-select: none;
         }
 
         .filter-pill:hover { 
             background: rgba(60, 60, 60, 0.8); 
-            transform: scale(1.08); /* Slightly larger scale */
+            transform: scale(1.05); 
             border-color: rgba(255, 255, 255, 0.3);
-            z-index: 10;
         }
         
         .filter-pill.active {
             background: #fff;
             color: #000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* Stronger shadow */
-            transform: scale(1.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transform: scale(1.05);
             border-color: #fff;
         }
 
@@ -167,7 +197,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px 24px 80px;
+            padding: 10px 24px 80px;
             width: 100%;
         }
 
@@ -191,13 +221,19 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .game-card:hover {
             transform: translateY(-8px) scale(1.02);
             border-color: var(--glass-highlight);
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
-            background: rgba(40, 40, 40, 0.75); /* Darker on hover for contrast */
+            background: rgba(40, 40, 40, 0.75);
         }
 
         /* Card Header */
@@ -207,7 +243,6 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            /* Subtle dark gradient overlay to make icon pop */
             background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%);
         }
         
@@ -219,22 +254,34 @@
             border-radius: 50%;
             filter: blur(60px);
             opacity: 0.4;
+            background: var(--card-color, var(--primary)); /* Dynamic Color */
         }
-
-        .accent-blue::before { background: var(--primary); }
-        .accent-purple::before { background: var(--accent-purple); }
-        .accent-pink::before { background: var(--accent-pink); }
-        .accent-green::before { background: var(--accent-green); }
-        .accent-orange::before { background: var(--accent-orange); }
 
         .card-header .icon-large {
             font-size: 5rem;
             z-index: 2;
-            /* Solid white with shadow for max legibility */
             color: #fff;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
         }
 
+        /* Share Button */
+        .share-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            color: #fff;
+            transition: all 0.2s;
+        }
+        .share-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+        
         /* Card Content */
         .card-content {
             padding: 28px;
@@ -256,6 +303,7 @@
             display: flex;
             gap: 12px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
         .stat-pill {
@@ -272,7 +320,6 @@
         }
         .stat-pill .material-symbols-rounded { font-size: 1rem; color: #fff; }
 
-        /* Tag Cloud */
         .tag-cloud {
             display: flex;
             flex-wrap: wrap;
@@ -292,13 +339,12 @@
 
         .game-desc {
             font-size: 0.95rem;
-            color: var(--text-secondary); /* Using higher contrast var */
+            color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 30px;
             flex: 1;
         }
 
-        /* Button */
         .ios-btn {
             background: #fff;
             color: #000;
@@ -314,18 +360,19 @@
         }
         .ios-btn:active { transform: scale(0.98); }
 
-        /* Ribbon */
-        .glass-ribbon {
-            position: absolute;
-            top: 24px; right: 0;
-            background: linear-gradient(135deg, #ff2d55, #ff375f);
-            color: white;
-            padding: 6px 16px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            border-radius: 100px 0 0 100px;
-            box-shadow: 0 4px 15px rgba(255, 45, 85, 0.3);
-            z-index: 10;
+        /* SKELETON LOADING */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 28px;
+            height: 450px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         footer { 
@@ -337,15 +384,20 @@
         }
         footer a { color: var(--text-secondary); text-decoration: none; }
 
-        /* Mobile Adjustments */
         @media (max-width: 600px) {
             h1 { font-size: 2.5rem; }
             .game-grid { grid-template-columns: 1fr; }
-            .filter-container { padding: 15px 20px; } /* Consistent mobile padding */
+            .filter-container { padding: 15px 20px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- AUDIO ASSETS (Base64 for immediate functionality) -->
+    <!-- 'Pop' sound for filter clicks -->
+    <audio id="sfx-pop" src="data:audio/wav;base64,UklGRi4AAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA9PT09PT09PT09PT09PT09PT09PT0="></audio>
+    <!-- 'Tick' sound for hover (Simulated) -->
+    <audio id="sfx-hover" volume="0.2"></audio> <!-- Keeping placeholder logic -->
 
     <!-- 1. Background -->
     <div class="mesh-background">
@@ -354,10 +406,15 @@
         <div class="mesh-blob blob-3"></div>
     </div>
 
-    <!-- 2. Header -->
+    <!-- 2. Header & Search -->
     <header>
         <div class="super-title">Game Portfolio</div>
         <h1>notalec1's Arcade</h1>
+        
+        <div class="search-wrapper">
+            <span class="material-symbols-rounded search-icon">search</span>
+            <input type="text" id="gameSearch" class="search-input" placeholder="Find a game..." onkeyup="handleSearch()">
+        </div>
     </header>
 
     <!-- 3. Scrollable Filters -->
@@ -375,173 +432,240 @@
 
     <!-- 4. Main Grid -->
     <main class="container">
-        <div class="game-grid">
-            
-            <!-- LINEUP -->
-            <a href="https://notalec1.github.io/lineup" class="game-card accent-blue" data-tags="coop strategy tv leaderboard autosave tutorial">
-                <div class="card-header">
-                    <span class="material-symbols-rounded icon-large">group_work</span>
-                </div>
-                <div class="card-content">
-                    <div class="game-title">Lineup</div>
-                    <div class="stats-row">
-                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 2-20+</div>
-                        <div class="stat-pill"><span class="material-symbols-rounded">timer</span> 1-2m</div>
-                    </div>
-                    <div class="tag-cloud">
-                        <span class="tag">🤝 Co-op</span>
-                        <span class="tag">🧠 Strategy</span>
-                        <span class="tag">🏆 Leaderboard</span>
-                        <span class="tag">💾 Auto-Save</span>
-                    </div>
-                    <div class="game-desc">
-                        Scan a QR code to get a secret number. Work together to line up correctly without revealing digits.
-                    </div>
-                    <div class="ios-btn">
-                        Play Now <span class="material-symbols-rounded">north_east</span>
-                    </div>
-                </div>
-            </a>
+        <!-- Skeleton Loader (Visible initially) -->
+        <div id="skeleton-grid" class="game-grid">
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+            <div class="skeleton"></div>
+        </div>
 
-            <!-- THE IMPOSTER -->
-            <a href="https://notalec1.github.io/imposter" class="game-card accent-purple" data-tags="pvp strategy mobile tv host leaderboard deduction">
-                <div class="card-header">
-                    <span class="material-symbols-rounded icon-large">fingerprint</span>
-                </div>
-                <div class="card-content">
-                    <div class="game-title">The Imposter</div>
-                    <div class="stats-row">
-                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 3-10+</div>
-                        <div class="stat-pill"><span class="material-symbols-rounded">timer</span> 3m</div>
-                    </div>
-                    <div class="tag-cloud">
-                        <span class="tag">🕵️ Deduction</span>
-                        <span class="tag">⚔️ PvP</span>
-                        <span class="tag">📱 Mobile First</span>
-                        <span class="tag">🛠️ Host Req.</span>
-                    </div>
-                    <div class="game-desc">
-                        A cyberpunk party game. Citizens know the secret word; the Imposter must blend in. Find the glitch.
-                    </div>
-                    <div class="ios-btn">
-                        Enter Lobby <span class="material-symbols-rounded">north_east</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- BUZZ-IN -->
-            <a href="https://notalec1.github.io/buzz-in" class="game-card accent-pink" data-tags="pvp mobile tv strategy reflexes leaderboard autosave host">
-                <div class="card-header">
-                    <span class="material-symbols-rounded icon-large">touch_app</span>
-                </div>
-                <div class="card-content">
-                    <div class="game-title">Buzz-In</div>
-                    <div class="stats-row">
-                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 2+</div>
-                        <div class="stat-pill"><span class="material-symbols-rounded">bolt</span> Instant</div>
-                    </div>
-                    <div class="tag-cloud">
-                        <span class="tag">⚔️ PvP</span>
-                        <span class="tag">⚡ Reflexes</span>
-                        <span class="tag">🏆 Leaderboard</span>
-                        <span class="tag">📺 TV Mode</span>
-                    </div>
-                    <div class="game-desc">
-                        Real-time trivia buzzer. Turn phones into game show buzzers and track who rang in first.
-                    </div>
-                    <div class="ios-btn">
-                        Start Quiz <span class="material-symbols-rounded">north_east</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- MONOPOLY MANAGER -->
-            <a href="https://notalec1.github.io/monopoly-manager" class="game-card accent-green" data-tags="pvp mobile tv casual luck leaderboard autosave host">
-                <div class="card-header">
-                    <span class="material-symbols-rounded icon-large">account_balance</span>
-                </div>
-                <div class="card-content">
-                    <div class="game-title">Monopoly Manager</div>
-                    <div class="stats-row">
-                        <div class="stat-pill"><span class="material-symbols-rounded">group</span> 2-8</div>
-                        <div class="stat-pill"><span class="material-symbols-rounded">all_inclusive</span> Endless</div>
-                    </div>
-                    <div class="tag-cloud">
-                        <span class="tag">⚔️ PvP</span>
-                        <span class="tag">🍀 Luck</span>
-                        <span class="tag">📱 Mobile First</span>
-                        <span class="tag">💾 Auto-Save</span>
-                    </div>
-                    <div class="game-desc">
-                        Digital banker utility. Manage properties, funds, and jail status to speed up board games.
-                    </div>
-                    <div class="ios-btn">
-                        Open Bank <span class="material-symbols-rounded">north_east</span>
-                    </div>
-                </div>
-            </a>
-
-            <!-- CM25 -->
-            <a href="https://notalec1.github.io/cm25" class="game-card accent-orange" data-tags="gallery private">
-                <div class="glass-ribbon">NEW</div>
-                <div class="card-header">
-                    <span class="material-symbols-rounded icon-large">photo_library</span>
-                </div>
-                <div class="card-content">
-                    <div class="game-title">CM25</div>
-                    <div class="stats-row">
-                        <div class="stat-pill"><span class="material-symbols-rounded">folder</span> Gallery</div>
-                        <div class="stat-pill"><span class="material-symbols-rounded">event</span> Dec 2025</div>
-                    </div>
-                    <div class="tag-cloud">
-                        <span class="tag">🔒 Private</span>
-                        <span class="tag">📸 Memories</span>
-                        <span class="tag">💾 Cloud</span>
-                    </div>
-                    <div class="game-desc">
-                        A digital time capsule library containing all photos and memories captured during the holidays.
-                    </div>
-                    <div class="ios-btn">
-                        View Gallery <span class="material-symbols-rounded">north_east</span>
-                    </div>
-                </div>
-            </a>
-
+        <!-- Real Content (Injected by JS) -->
+        <div id="game-grid" class="game-grid" style="display: none;"></div>
+        
+        <!-- Empty State -->
+        <div id="no-results" style="display: none; text-align: center; padding: 40px; color: var(--text-tertiary);">
+            <span class="material-symbols-rounded" style="font-size: 3rem; margin-bottom: 10px;">sentiment_dissatisfied</span>
+            <p>No games found matching criteria.</p>
         </div>
     </main>
 
     <footer>
-        <p>Designed by <a href="https://github.com/notalec1">notalec1</a> &bull; 2025</p>
+        <p>Designed by <a href="https://github.com/notalec1">notalec1</a> &bull; <span id="year"></span></p>
     </footer>
 
     <script>
+        // --- DATA SOURCE (JSON) ---
+        // CM25 removed. RPG added.
+        const gamesData = [
+            {
+                id: "lineup",
+                title: "Lineup",
+                url: "https://notalec1.github.io/lineup",
+                color: "var(--primary)",
+                icon: "group_work",
+                stats: [
+                    { icon: "group", text: "2-20+" },
+                    { icon: "timer", text: "1-2m" }
+                ],
+                tags: ["coop", "strategy", "tv", "leaderboard", "autosave", "tutorial"],
+                displayTags: ["🤝 Co-op", "🧠 Strategy", "🏆 Leaderboard", "💾 Auto-Save"],
+                desc: "Scan a QR code to get a secret number. Work together to line up correctly without revealing digits."
+            },
+            {
+                id: "imposter",
+                title: "The Imposter",
+                url: "https://notalec1.github.io/imposter",
+                color: "var(--accent-purple)",
+                icon: "fingerprint",
+                stats: [
+                    { icon: "group", text: "3-10+" },
+                    { icon: "timer", text: "3m" }
+                ],
+                tags: ["pvp", "strategy", "mobile", "tv", "host", "leaderboard", "deduction"],
+                displayTags: ["🕵️ Deduction", "⚔️ PvP", "📱 Mobile First", "🛠️ Host Req."],
+                desc: "A cyberpunk party game. Citizens know the secret word; the Imposter must blend in. Find the glitch."
+            },
+            {
+                id: "buzzin",
+                title: "Buzz-In",
+                url: "https://notalec1.github.io/buzz-in",
+                color: "var(--accent-pink)",
+                icon: "touch_app",
+                stats: [
+                    { icon: "group", text: "2+" },
+                    { icon: "bolt", text: "Instant" }
+                ],
+                tags: ["pvp", "mobile", "tv", "strategy", "reflexes", "leaderboard", "autosave", "host"],
+                displayTags: ["⚔️ PvP", "⚡ Reflexes", "🏆 Leaderboard", "📺 TV Mode"],
+                desc: "Real-time trivia buzzer. Turn phones into game show buzzers and track who rang in first."
+            },
+            {
+                id: "monopoly",
+                title: "Monopoly Manager",
+                url: "https://notalec1.github.io/monopoly-manager",
+                color: "var(--accent-green)",
+                icon: "account_balance",
+                stats: [
+                    { icon: "group", text: "2-8" },
+                    { icon: "all_inclusive", text: "Endless" }
+                ],
+                tags: ["pvp", "mobile", "tv", "casual", "luck", "leaderboard", "autosave", "host"],
+                displayTags: ["⚔️ PvP", "🍀 Luck", "📱 Mobile First", "💾 Auto-Save"],
+                desc: "Digital banker utility. Manage properties, funds, and jail status to speed up board games."
+            },
+            {
+                id: "rpg",
+                title: "RPG Project",
+                url: "https://dcweb-e3c43.web.app/",
+                color: "var(--accent-orange)",
+                icon: "swords", 
+                stats: [
+                    { icon: "explore", text: "Alpha" },
+                    { icon: "construction", text: "Dev" }
+                ],
+                tags: ["rpg", "mobile", "strategy", "dev"],
+                displayTags: ["⚔️ RPG", "🚧 In Dev", "🧠 Strategy"],
+                desc: "A new role-playing adventure currently in development. Build your party and conquer.",
+                ribbon: "COMING SOON"
+            }
+        ];
+
+        // --- SOUND SYSTEM ---
+        const audioPop = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3'); // Fallback external sound
+        audioPop.volume = 0.3;
+
+        function playSound() {
+            // Clone to allow rapid fire
+            const sound = audioPop.cloneNode();
+            sound.volume = 0.3;
+            sound.play().catch(e => console.log("Audio play prevented"));
+        }
+
+        // --- RENDER LOGIC ---
+        const grid = document.getElementById('game-grid');
+        const skeleton = document.getElementById('skeleton-grid');
+        const emptyState = document.getElementById('no-results');
+        
+        let activeCategory = 'all';
+
+        function init() {
+            // Set Year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Simulate Network Load for Skeleton Effect
+            setTimeout(() => {
+                skeleton.style.display = 'none';
+                grid.style.display = 'grid';
+                renderGames(gamesData);
+            }, 800);
+        }
+
+        function generateCardHTML(game) {
+            const tagsHTML = game.displayTags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            const statsHTML = game.stats.map(stat => 
+                `<div class="stat-pill"><span class="material-symbols-rounded">${stat.icon}</span> ${stat.text}</div>`
+            ).join('');
+            
+            const ribbonHTML = game.ribbon ? 
+                `<div style="position:absolute; top:24px; right:0; background: linear-gradient(135deg, #ff9f0a, #ff375f); color:white; padding:6px 16px; font-size:0.75rem; font-weight:800; border-radius:100px 0 0 100px; box-shadow:0 4px 15px rgba(255,159,10,0.3); z-index:10;">${game.ribbon}</div>` 
+                : '';
+
+            return `
+                <div class="game-card" style="--card-color: ${game.color}" onclick="playSound()">
+                    ${ribbonHTML}
+                    <button class="share-btn" onclick="shareGame('${game.title}', '${game.url}', event)">
+                        <span class="material-symbols-rounded">ios_share</span>
+                    </button>
+                    <a href="${game.url}" target="_blank" style="text-decoration:none; color:inherit; display:flex; flex-direction:column; flex:1;">
+                        <div class="card-header">
+                            <span class="material-symbols-rounded icon-large">${game.icon}</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="game-title">${game.title}</div>
+                            <div class="stats-row">${statsHTML}</div>
+                            <div class="tag-cloud">${tagsHTML}</div>
+                            <div class="game-desc">${game.desc}</div>
+                            <div class="ios-btn">
+                                Play Now <span class="material-symbols-rounded">north_east</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `;
+        }
+
+        function renderGames(data) {
+            grid.innerHTML = '';
+            
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                data.forEach(game => {
+                    grid.innerHTML += generateCardHTML(game);
+                });
+            }
+        }
+
+        // --- FILTERING ---
         function filterGames(category) {
-            // 1. Update Buttons
+            playSound();
+            activeCategory = category;
+
+            // Update UI
             document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
-
-            // 2. Filter Cards with Fade Effect
-            const cards = document.querySelectorAll('.game-card');
             
-            cards.forEach(card => {
-                const tags = card.getAttribute('data-tags');
-                const isMatch = category === 'all' || (tags && tags.includes(category));
-
-                if (isMatch) {
-                    card.style.display = 'flex';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0) scale(1)';
-                    }, 50);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px) scale(0.95)';
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 300); 
-                }
-            });
+            applyFilters();
         }
+
+        function handleSearch() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('gameSearch').value.toLowerCase();
+            
+            const filtered = gamesData.filter(game => {
+                // 1. Check Category
+                const matchesCategory = activeCategory === 'all' || game.tags.includes(activeCategory);
+                
+                // 2. Check Search Text
+                const matchesSearch = game.title.toLowerCase().includes(query) || 
+                                      game.desc.toLowerCase().includes(query) ||
+                                      game.tags.some(t => t.includes(query));
+
+                return matchesCategory && matchesSearch;
+            });
+
+            renderGames(filtered);
+        }
+
+        // --- SHARE API ---
+        async function shareGame(title, url, e) {
+            e.preventDefault(); // Stop card click
+            e.stopPropagation(); // Stop bubbling
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: title,
+                        text: `Check out ${title} on notalec1's Arcade!`,
+                        url: url
+                    });
+                } catch (err) {
+                    console.log('Share canceled');
+                }
+            } else {
+                // Fallback
+                navigator.clipboard.writeText(url);
+                alert('Link copied to clipboard!');
+            }
+        }
+
+        // Run
+        init();
+
     </script>
 </body>
 </html>
