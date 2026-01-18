@@ -46,7 +46,7 @@
             overscroll-behavior-y: none; /* Mobile Pull Refresh Fix */
         }
 
-        /* --- 1. LIVING MESH BACKGROUND --- */
+       /* --- 1. LIVING MESH BACKGROUND --- */
         .mesh-background {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -57,15 +57,31 @@
 
         .mesh-blob {
             position: absolute;
-            filter: blur(90px);
+            /* Reduced blur from 90px to 60px for more definition */
+            filter: blur(60px);
             border-radius: 50%;
-            opacity: 0.5;
+            /* Increased opacity from 0.5 to 0.8 for higher visibility */
+            opacity: 0.8; 
             animation: meshFloat 12s infinite alternate ease-in-out;
         }
 
-        .blob-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: #0040dd; animation-duration: 14s; }
-        .blob-2 { bottom: -10%; right: -10%; width: 70vw; height: 70vw; background: #4800b8; animation-duration: 18s; }
-        .blob-3 { top: 30%; left: 40%; width: 45vw; height: 45vw; background: #b80046; animation-duration: 22s; opacity: 0.4; }
+        /* I updated these colors to be brighter/more neon */
+        .blob-1 { 
+            top: -10%; left: -10%; width: 60vw; height: 60vw; 
+            background: #2962ff; /* Brighter Blue */
+            animation-duration: 14s; 
+        }
+        .blob-2 { 
+            bottom: -10%; right: -10%; width: 70vw; height: 70vw; 
+            background: #7c4dff; /* Brighter Purple */
+            animation-duration: 18s; 
+        }
+        .blob-3 { 
+            top: 30%; left: 40%; width: 45vw; height: 45vw; 
+            background: #ff4081; /* Hot Pink/Red */
+            animation-duration: 22s; 
+            opacity: 0.6; /* Slightly lower for the middle blob so text stays readable */
+        }
         
         @keyframes meshFloat {
             0% { transform: translate(0, 0) scale(1); }
