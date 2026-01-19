@@ -251,7 +251,7 @@
         }
 
         .game-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px) scale(1.04);
             border-color: var(--glass-highlight);
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
             background: rgba(40, 40, 40, 0.75);
@@ -566,7 +566,6 @@
 
     <script>
         // --- DATA SOURCE (JSON) ---
-        // CM25 removed. RPG added.
         const gamesData = [
             {
                 id: "lineup",
@@ -607,6 +606,25 @@
                 ]    
             },
             {
+                id: "mafia",
+                title: "Mafia",
+                url: "https://notalec1.github.io/mafia",
+                color: "#ff453a",
+                icon: "theater_comedy",
+                stats: [
+                    { icon: "group", text: "4-15+" },
+                    { icon: "timer", text: "15m+" }
+                ],
+                tags: ["pvp", "strategy", "mobile", "party", "host"],
+                displayTags: ["🎭 Roleplay", "⚔️ PvP", "🗣️ Deception", "🕯️ Classic"],
+                desc: "The classic social deduction game. The Mafia wakes up at night to eliminate citizens. The town must find the culprits.",
+                previews: [
+                    "https://placehold.co/400x230/ff453a/fff?text=Role+Card",
+                    "https://placehold.co/400x230/990000/fff?text=Night+Phase",
+                    "https://placehold.co/400x230/cc0000/fff?text=Town+Meeting"
+                ]
+            },
+            {
                 id: "buzzin",
                 title: "Buzz-In",
                 url: "https://notalec1.github.io/buzz-in",
@@ -642,6 +660,25 @@
                 "https://placehold.co/400x230/0a84ff/fff?text=Lobby+Screen",
                 "https://placehold.co/400x230/005bb5/fff?text=Gameplay+Phase",
                 "https://placehold.co/400x230/003366/fff?text=Victory"
+                ]
+            },
+            {
+                id: "newyear",
+                title: "NYE 2026",
+                url: "https://notalec1.github.io/newyear",
+                color: "#ffd60a",
+                icon: "celebration",
+                stats: [
+                    { icon: "group", text: "All" },
+                    { icon: "event", text: "Jan 1" }
+                ],
+                tags: ["event", "mobile", "tv", "visual"],
+                displayTags: ["🎉 Celebration", "🎆 Visuals", "📅 Event"],
+                desc: "A digital countdown and memory collection to ring in 2026. Celebrate the new year with synchronized timers.",
+                previews: [
+                    "https://placehold.co/400x230/ffd60a/000?text=Countdown",
+                    "https://placehold.co/400x230/b39200/fff?text=Fireworks",
+                    "https://placehold.co/400x230/333/fff?text=Resolutions"
                 ]
             },
             {
